@@ -20,12 +20,13 @@ In this assignment you'll be computing the digits of Pi using your Raspberry Pi!
 
 Write a multi-threaded program that computes the first 1000 digits of Pi (to the right of the decimal).  The program must utilize all system CPU cores simultaneously, using a task-based scheme to distribute the work.  The program should be written according to the following specifications:
 
-1. Create a FIFO queue that stores the compute tasks (http://www.cplusplus.com/reference/queue/queue/ (Links to an external site.)Links to an external site.).
+1. Create a FIFO queue that stores the compute tasks (http://www.cplusplus.com/reference/queue/queue/)
     1. This queue must be protected against race conditions.
     2. At program startup, before creating any of the worker threads, fully populate this queue with 1 task per digit to be computed; 1000 tasks.  Each task will say which digit to compute.
     3. This is a shared resource available to all worker threads (not a global variable, however).
     4. Use aggregation, rather than inheritance, to create this queue.  Use a mutex, private to the queue, to protect the write/read operations.
-2. Create a hash table to store the results (http://www.cplusplus.com/reference/unordered_map/unordered_map/ (Links to an external site.)Links to an external site.).  Each entry in the hash table has as its key the digit position and the computed Pi digit as its value.
+2. Create a hash table to store the results (http://www.cplusplus.com/reference/unordered_map/unordered_map/)
+Each entry in the hash table has as its key the digit position and the computed Pi digit as its value.
     1. This hash table must be protected against race conditions.
     2. This is a shared resource available to all worker threads (not a global variable, however).
     3. Use aggregation, rather than inheritance, to create this hash table.  Use a mutex, private to the hash table, to protect the write/read operations.
