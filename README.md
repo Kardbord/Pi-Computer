@@ -45,7 +45,6 @@ Write a multi-threaded program that computes the first 1000 digits of Pi (to the
 * You can use the utility 'htop' to visually watch the CPU cores utilization on your Raspberry Pi.  It can be installed by "sudo apt-get install htop".
 * I have provided some code you may use to compute the nth digit of Pi at this linkPreview the documentView in a new window.  I have adapted it from this source (http://stackoverflow.com/questions/5905822/function-to-find-the-nth-digit-of-pi (Links to an external site.)Links to an external site.).  It is really horrible to read, I don't recommend this coding style, but who am I to judge, the author of the code wrote something I didn't.  This implementation is O(n2), which isn't great, it slows down pretty quickly (that is why only 1000 digits).  Also, inside this code file there is a far, far faster way I've adapted from a Python source, which is something like O(log(n3) * log(n2)), but it gives results in base 16 (hex digits).  That is all well and good, but we can't convert those hex digits to decimal, because we'd need a floating point type with thousands of digits of precision, which we don't have.  If anyone tackles this, you are a hero!  I don't have the time to take it on.
     * There is another technique for computing the digits of PI, one I haven't tried.  It is supposed to be the standard for computing the digits FAST.  If anyone tries this code, let me know how it goes, I suspect it is significantly faster than the C code I originally found and provided.  You can find code and discussion at the following links:
-* https://gmplib.org/pi-with-gmp.html (Links to an external site.)Links to an external site.
-* https://en.wikipedia.org/wiki/Chudnovsky_algorithm (Links to an external site.)Links to an external site.
-* http://www.craig-wood.com/nick/articles/pi-chudnovsky/ (Links to an external site.)Links to an external site. (and it is "math" in the US, not "maths", that is British English).
-
+        * https://gmplib.org/pi-with-gmp.html
+        * https://en.wikipedia.org/wiki/Chudnovsky_algorithm
+        * http://www.craig-wood.com/nick/articles/pi-chudnovsky/ 
