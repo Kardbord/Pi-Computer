@@ -45,7 +45,7 @@ public:
     }
 
     // Returns the number of items in the queue
-    uint32_t size() {
+    uint64_t size() {
         std::lock_guard<std::mutex> lock(this->m_mutex);
         return m_queue.size();
     }
