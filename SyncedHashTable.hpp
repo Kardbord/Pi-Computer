@@ -12,8 +12,9 @@
 #include <unordered_map>
 
 // This class provides a thread-safe version of a std::unordered_map
-// All public member functions that access the underlying std::unordered_map require a std::mutex
-// to provide the thread-safe functionality
+//
+// Note that this class cannot be passed by const reference or copied due to its
+// private std::mutex member, m_mutex
 //
 // This class does not provide the following functionality that is provided by a std::unordered map:
 //       - TODO: fill out this list
@@ -24,7 +25,7 @@ public:
 
     // ----------------------------- CONSTRUCTORS ---------------------------------------- //
 
-    SyncedHashTable() : m_table() {}
+    SyncedHashTable() : m_table(), m_mutex() {}
 
     // TODO: provide additional appropriate constructors
 
@@ -34,8 +35,8 @@ public:
 
     // Returns a copy of the underlying std::unordered_map
     // The returned unordered_map is NOT thread safe
-    std::unordered_map<Key, T> getUnorderedMap(std::mutex & m) const { 
-        std::lock_guard<std::mutex> lock(m);
+    std::unordered_map<Key, T> getUnorderedMap() { 
+        std::lock_guard<std::mutex> lock(m_mutex);
         return m_table; 
     }
 
@@ -44,6 +45,8 @@ private:
     // ------------------------ VARIABLES AND CONSTANTS ---------------------------------- //
     
     std::unordered_map<Key, T> m_table;
+
+    std::mutex m_mutex;
 
     // ------------------------ PRIVATE MEMBER FUNCTIONS ---------------------------------- //
 
