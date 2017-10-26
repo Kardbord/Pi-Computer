@@ -44,6 +44,23 @@ public:
         return m_table.size();
     }
 
+    // Returns a reference to the mapped value of the element with a key equivalent to k
+    T& at(Key const & k) {
+        std::lock_guard<std::mutex> lock(m_mutex);
+        return m_table.at(k);
+    }
+
+    // Returns a reference to the mapped value of the element with a key equivalent to k if one exists
+    // If k does not match the key of any element in the container, the function inserts a new element
+    // with that key and returns a reference to its mapped value which will increase container size by 1
+    // The element at k is constructed with its default constructor
+    T& operator[](Key const & k) {
+        std::lock_guard<std::mutex> lock(m_mutex);
+        return m_table[k];
+    }
+
+
+
     // Returns a copy of the underlying std::unordered_map
     // The returned unordered_map is NOT thread safe
     std::unordered_map<Key, T> getUnorderedMap() { 
