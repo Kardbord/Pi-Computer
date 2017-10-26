@@ -90,6 +90,25 @@ public:
         return m_table.insert(std::make_pair<Key, T>(k, val));
     }
 
+    // Removes the element in the container whose key is equivalent to k
+    void erase(Key const & k) {
+        std::lock_guard<std::mutex> lock(m_mutex);
+        m_table.erase(k);
+    }
+
+    // Removes the element in the container pointed at by @it
+    void erase(typename std::unordered_map<Key, T>::const_iterator it) {
+        std::lock_guard<std::mutex> lock(m_mutex);
+        m_table.erase(it);
+    }
+
+    // All elements in the container are dropped: their destructors are called
+    // The container is left with size 0
+    void clear() {
+        std::lock_guard<std::mutex> lock(m_mutex);
+        m_table.clear();
+    }
+
     // Returns a copy of the underlying std::unordered_map
     // The returned unordered_map is NOT thread safe
     std::unordered_map<Key, T> getUnorderedMap() { 
