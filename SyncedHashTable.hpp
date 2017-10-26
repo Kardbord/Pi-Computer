@@ -66,6 +66,29 @@ public:
         return m_table.find(k);
     }
 
+    // Inserts a new element in the container
+    // Each element is inserted only if its key is not equivalent to the key of 
+    // any other element already in the container since keys in an unordered_map are unique
+    //
+    // Returns a pair where the first element in the pair is an iterator to the inserted element or to the 
+    // element whose key is equivalent
+    // The second element in the pair is a bool indicating whether or not the element was successfully inserted
+    std::pair<typename std::unordered_map<Key, T>::const_iterator, bool> insert(std::pair<Key, T> const & item) {
+        std::lock_guard<std::mutex> lock(m_mutex);
+        return m_table.insert(item);
+    }
+
+    // Inserts a new element in the container
+    // Each element is inserted only if its key is not equivalent to the key of 
+    // any other element already in the container since keys in an unordered_map are unique
+    //
+    // Returns a pair where the first element in the pair is an iterator to the inserted element or to the 
+    // element whose key is equivalent
+    // The second element in the pair is a bool indicating whether or not the element was successfully inserted
+    std::pair<typename std::unordered_map<Key, T>::const_iterator, bool> insert(Key const & k, T const & val) {
+        std::lock_guard<std::mutex> lock(m_mutex);
+        return m_table.insert(std::make_pair<Key, T>(k, val));
+    }
 
     // Returns a copy of the underlying std::unordered_map
     // The returned unordered_map is NOT thread safe
