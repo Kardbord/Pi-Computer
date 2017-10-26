@@ -31,7 +31,18 @@ public:
 
     // ------------------------ PUBLIC MEMBER FUNCTIONS ---------------------------------- //
 
-    // TODO: provide all necessary thread-safe member functions
+    // Returns true if the Table is empty
+    // Returns fals if the Table is not empty
+    bool empty() {
+        std::lock_guard<std::mutex> lock(m_mutex);
+        return m_table.empty();
+    }
+
+    // Returns the number of items in the Table
+    uint64_t size() {
+        std::lock_guard<std::mutex> lock(m_mutex);
+        return m_table.size();
+    }
 
     // Returns a copy of the underlying std::unordered_map
     // The returned unordered_map is NOT thread safe
