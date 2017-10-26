@@ -109,6 +109,19 @@ public:
         m_table.clear();
     }
 
+    // Returns an iterator pointing to the first element in the container
+    typename std::unordered_map<Key, T>::const_iterator begin() {
+        std::lock_guard<std::mutex> lock(m_mutex);
+        return m_table.begin();
+    }
+
+    // Returns an iterator pointing to the past-the-end element in the container
+    // which does not point to any element, but to the position following the last elment in the container
+    typename std::unordered_map<Key, T>::const_iterator end() {
+        std::lock_guard<std::mutex> lock(m_mutex);
+        return m_table.end();
+    }
+
     // Returns a copy of the underlying std::unordered_map
     // The returned unordered_map is NOT thread safe
     std::unordered_map<Key, T> getUnorderedMap() { 
