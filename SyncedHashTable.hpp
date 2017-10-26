@@ -16,9 +16,7 @@
 // Note that this class cannot be passed by const reference or copied due to its
 // private std::mutex member, m_mutex
 //
-// This class does not provide the following functionality that is provided by a std::unordered map:
-//       - TODO: fill out this list
-//       - 
+// Note that this class does not provide all of the functionality that std::unordered_map does
 template<typename Key, typename T>
 class SyncedHashTable {
 public:
@@ -26,19 +24,23 @@ public:
     // ----------------------------- CONSTRUCTORS ---------------------------------------- //
 
     SyncedHashTable() : m_table(), m_mutex() {}
-
-    // TODO: provide additional appropriate constructors and prevent copy construction
+    
+    // No copy construction allowed
+    SyncedHashTable(SyncedHashTable const&) = delete;
 
     // ------------------------ PUBLIC MEMBER FUNCTIONS ---------------------------------- //
 
-    // Returns true if the Table is empty
-    // Returns fals if the Table is not empty
+    // No copy construction allowed
+    SyncedHashTable& operator=(SyncedHashTable const&) = delete;
+
+    // Returns true if the container is empty
+    // Returns fals if the container is not empty
     bool empty() {
         std::lock_guard<std::mutex> lock(m_mutex);
         return m_table.empty();
     }
 
-    // Returns the number of items in the Table
+    // Returns the number of items in the container
     uint64_t size() {
         std::lock_guard<std::mutex> lock(m_mutex);
         return m_table.size();
