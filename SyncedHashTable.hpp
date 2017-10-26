@@ -30,7 +30,7 @@ public:
 
     // ------------------------ PUBLIC MEMBER FUNCTIONS ---------------------------------- //
 
-    // No copy construction allowed
+    // No copy assignment allowed
     SyncedHashTable& operator=(SyncedHashTable const&) = delete;
 
     // Returns true if the container is empty

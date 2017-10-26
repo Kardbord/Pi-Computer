@@ -34,7 +34,7 @@ public:
 
     // ------------------------ PUBLIC MEMBER FUNCTIONS ---------------------------------- //
 
-    // No copy construction allowed
+    // No copy assignment allowed
     SyncedQueue& operator=(SyncedQueue const&) = delete;
 
     // Returns true if the queue is empty
