@@ -9,4 +9,5 @@ add_executable(
     Assign5
     main.cpp
     SyncedQueue.hpp
+    SyncedHashTable.hpp
 )
