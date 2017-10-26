@@ -25,6 +25,8 @@ public:
 
     SyncedHashTable() : m_table(), m_mutex() {}
     
+    // TODO: implement appropriate constructors
+
     // No copy construction allowed
     SyncedHashTable(SyncedHashTable const&) = delete;
 
