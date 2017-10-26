@@ -12,8 +12,9 @@
 #include <queue>
 
 // This class provides a thread-safe version of a std::queue
-// All public member functions that access the underlying std::queue require a std::mutex
-// to provide the thread-safe functionality.
+//
+// Note that this class cannot be passed by const reference or copied due to its 
+// private std::mutex member, m_mutex
 // 
 // This is a first-in, first-out data structure
 // 
@@ -24,50 +25,54 @@ public:
 
     // ----------------------------- CONSTRUCTORS ---------------------------------------- //
 
-    SyncedQueue() : m_queue() {}
+    SyncedQueue() : m_queue(), m_mutex() {}
 
-    SyncedQueue(std::queue<T> const & q) : m_queue(q) {}
+    SyncedQueue(std::queue<T> const & q) : m_queue(q), m_mutex() {}
 
-    SyncedQueue(SyncedQueue<T> const & q, std::mutex & m) : m_queue(q.getQueue(m)) {}
+    // No copy construction allowed
+    SyncedQueue(SyncedQueue const&) = delete;
 
     // ------------------------ PUBLIC MEMBER FUNCTIONS ---------------------------------- //
 
+    // No copy construction allowed
+    SyncedQueue& operator=(SyncedQueue const&) = delete;
+
     // Returns true if the queue is empty
     // Returns false if the queue is not empty
-    bool empty(std::mutex & m) const {
-        std::lock_guard<std::mutex> lock(m);
+    bool empty() {
+        std::lock_guard<std::mutex> lock(this->m_mutex);
         return m_queue.empty();
     }
 
     // Returns the number of items in the queue
-    uint32_t size(std::mutex & m) const {
-        std::lock_guard<std::mutex> lock(m);
+    uint32_t size() {
+        std::lock_guard<std::mutex> lock(this->m_mutex);
         return m_queue.size();
     }
 
     // Returns, but does not remove, the next item in the queue
-    T front(std::mutex & m) const {
-        std::lock_guard<std::mutex> lock(m);
+    T front() {
+        std::lock_guard<std::mutex> lock(this->m_mutex);
         return m_queue.front();
     }
 
     // Returns, but does not remove, the last item in the queue
-    T back(std::mutex & m) const {
-        std::lock_guard<std::mutex> lock(m);
+    T back() {
+        std::lock_guard<std::mutex> lock(this->m_mutex);
         return m_queue.back();
     }
 
     // Inserts @item to the back of the queue
-    void push(T const & item, std::mutex & m) {
-        std::lock_guard<std::mutex> lock(m);
+    void push(T const & item) {
+        std::lock_guard<std::mutex> lock(this->m_mutex);
         m_queue.push(item);
     }
 
     // Removes and returns the next item in the queue
     // Note that this differs from the std::queue implementation of pop, 
     // which does not return the popped item
-    T pop(std::mutex & m) {
-        std::lock_guard<std::mutex> lock(m);
+    T pop() {
+        std::lock_guard<std::mutex> lock(this->m_mutex);
         T popped_item = m_queue.front();
         m_queue.pop();
         return popped_item;
@@ -75,8 +80,8 @@ public:
 
     // Returns a copy of the underlying std::queue
     // The returned queue is NOT thread safe
-    std::queue<T> getQueue(std::mutex & m) const { 
-        std::lock_guard<std::mutex> lock(m);
+    std::queue<T> getQueue() { 
+        std::lock_guard<std::mutex> lock(this->m_mutex);
         return m_queue; 
     }
 
@@ -85,6 +90,8 @@ private:
     // ------------------------ VARIABLES AND CONSTANTS ---------------------------------- //
 
     std::queue<T> m_queue;
+
+    std::mutex m_mutex;
 
     // ------------------------ PRIVATE MEMBER FUNCTIONS ---------------------------------- //
 

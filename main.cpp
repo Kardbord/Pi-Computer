@@ -9,50 +9,34 @@
 #include <iostream>
 #include <cstdlib>
 
-#include <mutex>
 #include "SyncedQueue.hpp"
 #include "SyncedHashTable.hpp"
 
 int main() {
-    std::mutex m;
-
     // ---------- SyncedQueue Default Constructor Test ---------- //
     std::cout << "SyncedQueue 1:" << std::endl;
     SyncedQueue<int> q;
-    for (int i = 0; i < 10; ++i) q.push(i, m);
+    for (int i = 0; i < 10; ++i) q.push(i);
 
-    if (!q.empty(m)) { 
-        std::cout << "front: " << q.front(m) << std::endl;
-        std::cout << "back: " << q.back(m) << std::endl;
+    if (!q.empty()) { 
+        std::cout << "front: " << q.front() << std::endl;
+        std::cout << "back: " << q.back() << std::endl;
     }
-    std::cout << "size: " << q.size(m) << std::endl;
-    std::cout << "popped: " << q.pop(m) << std::endl;
-    std::cout << "popped: " << q.pop(m) << std::endl;
+    std::cout << "size: " << q.size() << std::endl;
+    std::cout << "popped: " << q.pop() << std::endl;
+    std::cout << "popped: " << q.pop() << std::endl;
 
     // ---------- SyncedQueue Pure Copy Constructor Test ---------- //
     std::cout << std::endl;
     std::cout << "SyncedQueue 2:" << std::endl;
-    SyncedQueue<int> q2(q, m);
-    if (!q2.empty(m)) { 
-        std::cout << "front: " << q2.front(m) << std::endl;
-        std::cout << "back: " << q2.back(m) << std::endl;
+    SyncedQueue<int> q2(q.getQueue());
+    if (!q2.empty()) { 
+        std::cout << "front: " << q2.front() << std::endl;
+        std::cout << "back: " << q2.back() << std::endl;
     }
-    std::cout << "size: " << q2.size(m) << std::endl;
-    std::cout << "popped: " << q2.pop(m) << std::endl;
-    std::cout << "popped: " << q2.pop(m) << std::endl;
-
-    // ---------- SyncedQueue Queue Copy Constructor Test ---------- //
-    std::cout << std::endl;
-    std::queue<int> stdq(q2.getQueue(m));
-    std::cout << "SyncedQueue 3:" << std::endl;
-    SyncedQueue<int> q3(stdq);
-    if (!q3.empty(m)) { 
-        std::cout << "front: " << q3.front(m) << std::endl;
-        std::cout << "back: " << q3.back(m) << std::endl;
-    }
-    std::cout << "size: " << q3.size(m) << std::endl;
-    std::cout << "popped: " << q3.pop(m) << std::endl;
-    std::cout << "popped: " << q3.pop(m) << std::endl;
+    std::cout << "size: " << q2.size() << std::endl;
+    std::cout << "popped: " << q2.pop() << std::endl;
+    std::cout << "popped: " << q2.pop() << std::endl;
 
     return EXIT_SUCCESS;
 }
