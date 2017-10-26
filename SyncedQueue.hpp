@@ -1,3 +1,10 @@
+///////////////////////////
+// Tanner Kvarfordt      //
+// A02052217             //
+// CS 3100 --Dr. Mathias //
+// Assignment 5          //
+///////////////////////////
+
 #ifndef _SYNCED_QUEUE_HPP
 #define _SYNCED_QUEUE_HPP
 
@@ -21,7 +28,7 @@ public:
 
     SyncedQueue(std::queue<T> const & q) : m_queue(q) {}
 
-    SyncedQueue(SyncedQueue<T> const & q) : m_queue(q.getQueue()) {}
+    SyncedQueue(SyncedQueue<T> const & q, std::mutex & m) : m_queue(q.getQueue(m)) {}
 
     // ------------------------ PUBLIC MEMBER FUNCTIONS ---------------------------------- //
 
@@ -68,7 +75,10 @@ public:
 
     // Returns a copy of the underlying std::queue
     // The returned queue is NOT thread safe
-    std::queue<T> getQueue() const { return m_queue; }
+    std::queue<T> getQueue(std::mutex & m) const { 
+        std::lock_guard<std::mutex> lock(m);
+        return m_queue; 
+    }
 
 private:
 
