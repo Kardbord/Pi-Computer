@@ -27,7 +27,7 @@ public:
 
     SyncedHashTable() : m_table(), m_mutex() {}
 
-    // TODO: provide additional appropriate constructors
+    // TODO: provide additional appropriate constructors and prevent copy construction
 
     // ------------------------ PUBLIC MEMBER FUNCTIONS ---------------------------------- //
 
@@ -59,6 +59,12 @@ public:
         return m_table[k];
     }
 
+    // Searches the container for an element with a key equivalent to k
+    // Returns an iterator to that element if found, returns unordered_map::end otherwise
+    typename std::unordered_map<Key, T>::const_iterator find(Key const & k) {
+        std::lock_guard<std::mutex> lock(m_mutex);
+        return m_table.find(k);
+    }
 
 
     // Returns a copy of the underlying std::unordered_map
