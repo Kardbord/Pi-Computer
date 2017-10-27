@@ -36,6 +36,7 @@ void outputPi(SyncedHashTable<_uint_, uint8_t> & pi_digits) {
     }
 }
 
+// TODO: I'm pretty sure my problem is either in this function or in the way I implemented SyncedQueue
 void threadStart(SyncedQueue<_uint_> & queue, SyncedHashTable<_uint_, uint8_t> & pi_digits) {
     while (!queue.empty()) {
         // indicate progress
