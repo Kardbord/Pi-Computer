@@ -8,6 +8,9 @@
 
 #include <iostream>
 #include <cstdlib>
+#include <vector>
+#include <thread>
+#include <functional>
 
 #include "SyncedQueue.hpp"
 #include "SyncedHashTable.hpp"
@@ -21,10 +24,23 @@ using _uint_ = uint32_t;
 const _uint_ N_DIGITS = 1000;
 
 // Populates the SyncedQueue with the tasks (digits) of pi that need computing
-template<typename T = _uint_>
-void populateQueue(SyncedQueue<T> & queue) {
+void populateQueue(SyncedQueue<_uint_> & queue) {
     for (_uint_ i = 1; i < N_DIGITS; ++i) {
         queue.push(i);
+    }
+}
+
+void outputPi(SyncedHashTable<_uint_, uint8_t> & pi_digits) {
+    for (_uint_ i = 1; i < N_DIGITS; ++i) {
+        std::cout << pi_digits.find(i)->second;
+    }
+}
+
+void threadStart(SyncedQueue<_uint_> & queue, SyncedHashTable<_uint_, uint8_t> & pi_digits) {
+    while (!queue.empty()) {
+        // indicate progress
+        std::cout << ".";
+        pi_digits.insert(queue.front(), computePiDigit(queue.pop()));
     }
 }
 
@@ -32,7 +48,19 @@ int main() {
     SyncedQueue<_uint_> queue;
     populateQueue(queue);
 
-    std::cout << queue.pop() << std::endl << queue.pop() << std::endl;
+    // Key-value pair hashtable where:
+    // Key is a _uint_ to indicate the nth digit of pi
+    // Value is a the digit of pi in that position
+    SyncedHashTable<_uint_, uint8_t> pi_digits;
+
+    std::vector<std::thread> threads;
+    for (uint16_t i = 0; i < std::thread::hardware_concurrency(); ++i) {
+        threads.push_back(std::thread(threadStart, std::ref(queue), std::ref(pi_digits)));
+    }
+
+    for (auto && th : threads) th.join();
+
+    outputPi(pi_digits);
 
     return EXIT_SUCCESS;
 }
