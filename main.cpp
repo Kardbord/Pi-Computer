@@ -25,23 +25,30 @@ const _uint_ N_DIGITS = 1000;
 
 // Populates the SyncedQueue with the tasks (digits) of pi that need computing
 void populateQueue(SyncedQueue<_uint_> & queue) {
-    for (_uint_ i = 1; i < N_DIGITS; ++i) {
+    for (_uint_ i = 1; i <= N_DIGITS; ++i) {
         queue.push(i);
     }
 }
 
+// TODO: problem could be how I implemented SyncedHashTable with the std::mutex member
 void outputPi(SyncedHashTable<_uint_, uint8_t> & pi_digits) {
     for (_uint_ i = 1; i < N_DIGITS; ++i) {
         std::cout << pi_digits.find(i)->second;
     }
 }
 
-// TODO: I'm pretty sure my problem is either in this function or in the way I implemented SyncedQueue
+// TODO: Problem could be how I implemented SyncedQueue with the std::mutex member
 void threadStart(SyncedQueue<_uint_> & queue, SyncedHashTable<_uint_, uint8_t> & pi_digits) {
     while (!queue.empty()) {
         // indicate progress
-        std::cout << ".";
-        pi_digits.insert(queue.front(), computePiDigit(queue.pop()));
+        //std::cout << ".";
+        auto digit_pos = queue.pop();
+        auto digit = computePiDigit(digit_pos);
+        if (!pi_digits.insert(digit_pos, digit).second) {
+            std::cout << "failed insert";
+        } else {
+            std::cout << digit;
+        }
     }
 }
 
@@ -61,7 +68,8 @@ int main() {
 
     for (auto && th : threads) th.join();
 
-    outputPi(pi_digits);
+    // TODO: uncomment me for garbledy-goop
+    //outputPi(pi_digits);
 
     return EXIT_SUCCESS;
 }
