@@ -30,25 +30,21 @@ void populateQueue(SyncedQueue<_uint_> & queue) {
     }
 }
 
-// TODO: problem could be how I implemented SyncedHashTable with the std::mutex member
-void outputPi(SyncedHashTable<_uint_, uint8_t> & pi_digits) {
-    for (_uint_ i = 1; i < N_DIGITS; ++i) {
+void outputPi(SyncedHashTable<_uint_, uint16_t> & pi_digits) {
+    std::cout << "3.";
+    for (_uint_ i = 1; i <= N_DIGITS; ++i) {
         std::cout << pi_digits.find(i)->second;
     }
 }
 
-// TODO: Problem could be how I implemented SyncedQueue with the std::mutex member
-void threadStart(SyncedQueue<_uint_> & queue, SyncedHashTable<_uint_, uint8_t> & pi_digits) {
+void threadStart(SyncedQueue<_uint_> & queue, SyncedHashTable<_uint_, uint16_t> & pi_digits) {
     while (!queue.empty()) {
         // indicate progress
-        //std::cout << ".";
+        std::cout << ".";
+        std::cout.flush();
         auto digit_pos = queue.pop();
         auto digit = computePiDigit(digit_pos);
-        if (!pi_digits.insert(digit_pos, digit).second) {
-            std::cout << "failed insert";
-        } else {
-            std::cout << digit;
-        }
+        pi_digits.insert(digit_pos, digit);
     }
 }
 
@@ -59,7 +55,7 @@ int main() {
     // Key-value pair hashtable where:
     // Key is a _uint_ to indicate the nth digit of pi
     // Value is a the digit of pi in that position
-    SyncedHashTable<_uint_, uint8_t> pi_digits;
+    SyncedHashTable<_uint_, uint16_t> pi_digits;
 
     std::vector<std::thread> threads;
     for (uint16_t i = 0; i < std::thread::hardware_concurrency(); ++i) {
@@ -68,8 +64,9 @@ int main() {
 
     for (auto && th : threads) th.join();
 
-    // TODO: uncomment me for garbledy-goop
-    //outputPi(pi_digits);
+    outputPi(pi_digits);
+
+    std::cout << std::endl;
 
     return EXIT_SUCCESS;
 }
