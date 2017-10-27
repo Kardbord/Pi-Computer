@@ -10,6 +10,7 @@
 
 #include <mutex>
 #include <unordered_map>
+#include <utility>
 
 // This class provides a thread-safe version of a std::unordered_map
 //
@@ -89,7 +90,7 @@ public:
     // The second element in the pair is a bool indicating whether or not the element was successfully inserted
     std::pair<typename std::unordered_map<Key, T>::const_iterator, bool> insert(Key const & k, T const & val) {
         std::lock_guard<std::mutex> lock(m_mutex);
-        return m_table.insert(std::make_pair<Key, T>(k, val));
+        return m_table.insert(std::make_pair(k, val));
     }
 
     // Removes the element in the container whose key is equivalent to k
