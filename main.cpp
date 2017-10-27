@@ -31,7 +31,7 @@ void populateQueue(SyncedQueue<_uint_> & queue) {
 }
 
 void outputPi(SyncedHashTable<_uint_, uint16_t> & pi_digits) {
-    std::cout << "3.";
+    std::cout << std::endl << "3.";
     for (_uint_ i = 1; i <= N_DIGITS; ++i) {
         std::cout << pi_digits.find(i)->second;
     }
