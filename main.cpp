@@ -11,32 +11,28 @@
 
 #include "SyncedQueue.hpp"
 #include "SyncedHashTable.hpp"
+#include "PiComputer.hpp"
+
+// The unsigned integral type that will be used to store integers up to the value of N_DIGITS 
+// Can be changed to uint64_t or uint128_t if you wish to compute an insane number of pi digits
+using _uint_ = uint32_t;
+
+// The number of digits of pi to compute
+const _uint_ N_DIGITS = 1000;
+
+// Populates the SyncedQueue with the tasks (digits) of pi that need computing
+template<typename T = _uint_>
+void populateQueue(SyncedQueue<T> & queue) {
+    for (_uint_ i = 1; i < N_DIGITS; ++i) {
+        queue.push(i);
+    }
+}
 
 int main() {
-    // ---------- SyncedQueue Default Constructor Test ---------- //
-    std::cout << "SyncedQueue 1:" << std::endl;
-    SyncedQueue<int> q;
-    for (int i = 0; i < 10; ++i) q.push(i);
+    SyncedQueue<_uint_> queue;
+    populateQueue(queue);
 
-    if (!q.empty()) { 
-        std::cout << "front: " << q.front() << std::endl;
-        std::cout << "back: " << q.back() << std::endl;
-    }
-    std::cout << "size: " << q.size() << std::endl;
-    std::cout << "popped: " << q.pop() << std::endl;
-    std::cout << "popped: " << q.pop() << std::endl;
-
-    // ---------- SyncedQueue Pure Copy Constructor Test ---------- //
-    std::cout << std::endl;
-    std::cout << "SyncedQueue 2:" << std::endl;
-    SyncedQueue<int> q2(q.getQueue());
-    if (!q2.empty()) { 
-        std::cout << "front: " << q2.front() << std::endl;
-        std::cout << "back: " << q2.back() << std::endl;
-    }
-    std::cout << "size: " << q2.size() << std::endl;
-    std::cout << "popped: " << q2.pop() << std::endl;
-    std::cout << "popped: " << q2.pop() << std::endl;
+    std::cout << queue.pop() << std::endl << queue.pop() << std::endl;
 
     return EXIT_SUCCESS;
 }

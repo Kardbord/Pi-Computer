@@ -42,7 +42,12 @@
 //  #define mul_mod(a,b,m) std::fmod( (double) a * (double) b, m)
 //#endif
 
-/* Computes the nth digit of pi */
+/* Computes the nth digit of pi
+*  n = 1 results in 1
+*  n = 2 results in 4
+*  n = 3 results in 1
+*  n = 4 results in 5
+*/
 unsigned int computePiDigit(int n);
 
 /* Computes the nth digit of pi in hex  */
