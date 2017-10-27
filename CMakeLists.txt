@@ -10,4 +10,5 @@ add_executable(
     main.cpp
     SyncedQueue.hpp
     SyncedHashTable.hpp
+    PiComputer.hpp PiComputer.cpp
 )
