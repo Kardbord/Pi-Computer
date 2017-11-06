@@ -54,7 +54,7 @@ int main() {
 
     // Key-value pair hashtable where:
     // Key is a _uint_ to indicate the nth digit of pi
-    // Value is a the digit of pi in that position
+    // Value is the digit of pi in that position
     SyncedHashTable<_uint_, uint16_t> pi_digits;
 
     std::vector<std::thread> threads;
