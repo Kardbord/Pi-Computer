@@ -38,13 +38,14 @@ void outputPi(SyncedHashTable<_uint_, uint16_t> & pi_digits) {
 }
 
 void threadStart(SyncedQueue<_uint_> & queue, SyncedHashTable<_uint_, uint16_t> & pi_digits) {
-    while (!queue.empty()) {
+    std::shared_ptr<_uint_> digit_pos;
+    while ((digit_pos = queue.pop()) != nullptr) {
         // indicate progress
         std::cout << ".";
         std::cout.flush();
-        auto digit_pos = queue.pop();
-        auto digit = computePiDigit(digit_pos);
-        pi_digits.insert(digit_pos, digit);
+        auto digit = computePiDigit(*digit_pos);
+        pi_digits.insert(*digit_pos, digit);
+        digit_pos.reset();
     }
 }
 

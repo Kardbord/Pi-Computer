@@ -10,6 +10,7 @@
 
 #include <mutex>
 #include <queue>
+#include <memory>
 
 // This class provides a thread-safe version of a std::queue
 //
@@ -71,9 +72,10 @@ public:
     // Removes and returns the next item in the queue
     // Note that this differs from the std::queue implementation of pop, 
     // which does not return the popped item
-    T pop() {
+    std::shared_ptr<T> pop() {
         std::lock_guard<std::mutex> lock(this->m_mutex);
-        T popped_item = m_queue.front();
+        if (m_queue.empty()) return nullptr;
+        std::shared_ptr<T> popped_item = std::make_shared<T>(m_queue.front());
         m_queue.pop();
         return popped_item;
     }
