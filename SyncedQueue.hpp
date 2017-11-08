@@ -51,9 +51,12 @@ public:
         return m_queue.size();
     }
 
-    // Returns, but does not remove, the next item in the queue
-    T front() {
+    // Returns a pointer to the next item in the queue
+    // Does not remove the item
+    // Returns nullptr if the queue is empty
+    std::shared_ptr<T> front() {
         std::lock_guard<std::mutex> lock(this->m_mutex);
+        if (m_queue.empty()) return nullptr;
         return m_queue.front();
     }
 
