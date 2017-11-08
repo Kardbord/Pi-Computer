@@ -69,7 +69,8 @@ public:
         m_queue.push(item);
     }
 
-    // Removes and returns the next item in the queue
+    // Removes and returns a pointer to the next item in the queue
+    // Returns nullptr if the queue is empty
     // Note that this differs from the std::queue implementation of pop, 
     // which does not return the popped item
     std::shared_ptr<T> pop() {
