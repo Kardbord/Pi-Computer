@@ -2,15 +2,13 @@
 
 ### Tanner Kvarfordt
 
-### A02052217
-
 ### Preface
+
+This program was written for CS3100 (OS and Concurrency). Both Pi-Computer.hpp and Pi-Computer.cpp are the work of Dr. Mathias.
+The rest of the code is my own work.
 
 The description below is taken directly from Dr. Mathias's canvas page for this assignment and modified
 to be a markdown file.
-
-See the assignment in Canvas for additional info, unless you're not a student registered in this class, 
-in which case you're SOL. :P
 
 ### Introduction
 
